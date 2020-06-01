@@ -24,6 +24,7 @@ import time
 import random
 from copy import deepcopy
 
+
 def login():
     with open(os.path.join(os.path.dirname(__file__), 'resource/account.txt')) as f:
         accounts = [line.split() for line in f.readlines()]

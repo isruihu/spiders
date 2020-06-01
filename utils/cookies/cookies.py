@@ -71,9 +71,9 @@ class CookiePool:
         conn = sqlite3.connect(cls.__db)
         cursor = conn.cursor()
         for cookie in cookies:
-            cursor.execute(
-                'insert into {} (cookie) values ("{}")'
-                .format(table_name, cookie))
+            sql = "insert into {} (cookie) values ('{}')".format(table_name, cookie)
+            # print(sql)
+            cursor.execute(sql)
         cursor.close()
         conn.commit()
         conn.close()
