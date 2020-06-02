@@ -1,0 +1,18 @@
+[master 1acdff8] '将滑块验证部分独立成模块-
+ 24 files changed, 256 insertions(+), 75 deletions(-)
+ rewrite config/__pycache__/config.cpython-36.pyc (87%)
+ create mode 100644 res.html
+ rewrite spiders/qichacha/__pycache__/qichacha.cpython-36.pyc (71%)
+ create mode 100644 spiders/zhihu/__init__.py
+ create mode 100644 spiders/zhihu/__pycache__/zhihu.cpython-36.pyc
+ create mode 100644 spiders/zhihu/resource/account.txt
+ create mode 100644 spiders/zhihu/spider.py
+ create mode 100644 spiders/zhihu/zhihu.py
+ create mode 100644 utils/__pycache__/login_base.cpython-36.pyc
+ create mode 100644 utils/cookies/__init__.py
+ create mode 100644 utils/login/__init__.py
+ create mode 100644 utils/login/__pycache__/__init__.cpython-36.pyc
+ create mode 100644 utils/login/__pycache__/login_base.cpython-36.pyc
+ create mode 100644 utils/login/__pycache__/slider_verify.cpython-36.pyc
+ create mode 100644 utils/login/login_base.py
+ create mode 100644 utils/login/slider_verify.py

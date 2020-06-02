@@ -19,17 +19,23 @@ class LoginBaseModule(metaclass=ABCMeta):
     cookie_table_name = None
     test_url = None
 
-    def __init__(self, headless=True, imageless=True):
-
+    def __init__(self, headless=True, imageless=True, user_agent=None):
+        """
+        headless: 是否开启无头模式
+        imageless: 是否不加载图片
+        user_agent: 请求头
+        """
         options = Options()
          # 不加载图片，加快访问速度
         if imageless: 
             options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+        if headless:
+            options.add_argument('--headless')
+        if user_agent:
+            options.add_argument('user-agent="{}"'.format(user_agent))
         # 设置为开发者模式，避免被识别
         options.add_experimental_option('excludeSwitches', ['enable-automation'])
         options.add_experimental_option('useAutomationExtension', False)
-        if headless:
-            options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-gpu')
         

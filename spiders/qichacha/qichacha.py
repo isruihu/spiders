@@ -54,7 +54,8 @@ class Qichacha(LoginBaseModule):
             expected_conditions.presence_of_element_located((By.XPATH, '//*[@class="nc_iconfont btn_slide"]'))
         )
         tracks = get_tracks(distance=340)
-        move_to_gap(self.browser ,slider=slider, tracks=tracks)
+        print(tracks)
+        move_to_gap(self.browser, slider=slider, tracks=tracks)
         # 点击登录
         self.browser.find_element_by_css_selector('button.btn.btn-primary.btn-block.m-t-md.login-btn').click()
         time.sleep(5)
@@ -93,5 +94,5 @@ def qcc_cookie_check(response):
     
 
 if __name__ == "__main__":
-    qcc = Qichacha('17373229849', '0.123456')
+    qcc = Qichacha('17373229848', '0.123456')
     qcc.login()
