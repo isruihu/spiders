@@ -12,4 +12,4 @@ sys.path.append(ROOT)
 
 def write_html(html):
     with open(ROOT + '/res.html', 'w', encoding='utf-8') as f:
-     f.write(html.text)
+        f.write(html.text)

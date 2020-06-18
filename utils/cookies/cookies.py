@@ -123,5 +123,4 @@ class CookiePool:
 
 if __name__ == "__main__":
     cp = CookiePool()
-    print(cp.get_cookies('qcc'))
-    # cp.delete_cookies('qcc', 1)
+    cp.delete_cookies('google', None)

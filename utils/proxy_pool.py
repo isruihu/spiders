@@ -36,31 +36,33 @@ class ProxyPool:
         requests.get("{}/delete/?proxy={}".format(SERVER, proxy_ip))
 
 
-def test_proxy_ip(proxy_ip, test_url):
+def test_proxy_ip(proxy_ip, test_url, headers=None):
     """
     测试代理ip有效性
     proxy_ip: 代理ip
     test_url: 测试地址
     """
+    status_code = None
     for _ in range(3):
         try:
             proxies = {
                 "http": "http://{}".format(proxy_ip),
                 "https:": "https://{}".format(proxy_ip)
             }
-            res = requests.get(url=test_url, timeout=3, proxies=proxies)
+            res = requests.get(url=test_url, timeout=3, proxies=proxies, headers=headers)
             write_html(res)
+            status_code = res.status_code
             if res.status_code == 200:
                 print("{} is VALID!".format(proxy_ip))
                 return True
         except (ProxyError, ConnectTimeout, ConnectionError, ReadTimeout) as e:
             # print(e)
             continue
-    # print("{} is invaild.".format(proxy_ip))
+    print("{} is invaild. {}".format(proxy_ip, status_code))
     return False
 
 
-def get_proxy_ip(test_url):
+def get_proxy_ip(test_url, headers=None):
     """
     获取一个有效代理ip(循环测试代理ip，直到找到一个有效代理)
     """
@@ -76,7 +78,7 @@ def get_proxy_ip(test_url):
             raise RuntimeError("Failed to connect to the Proxy Server.")
         # 测试代理ip是否有效
         try:
-            if test_proxy_ip(proxy_ip, test_url):
+            if test_proxy_ip(proxy_ip, test_url, headers=headers):
                 return proxy_ip
             else: # 状态码 != 200
                 invalid += 1
@@ -88,14 +90,15 @@ def get_proxy_ip(test_url):
 
 class thread_with_exception(threading.Thread): 
     """带异常的线程"""
-    def __init__(self, proxy_ip:list, test_url): 
+    def __init__(self, proxy_ip:list, test_url, headers=None): 
         threading.Thread.__init__(self) 
         self.proxy_ip = proxy_ip
         self.test_url = test_url
+        self.headers = headers
 
     def run(self): 
         # target function of the thread class 
-        ip = get_proxy_ip(self.test_url)
+        ip = get_proxy_ip(self.test_url, headers=self.headers)
         self.proxy_ip.append(ip)
         # while True:
         #     print("{} still running.".format(threading.currentThread().name))
@@ -116,7 +119,7 @@ class thread_with_exception(threading.Thread):
             ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)  
 
 
-def get_proxy_ip_multithread(test_url, threading_num=5):
+def get_proxy_ip_multithread(test_url, threading_num=5, headers=None):
     """
     多线程获取代理ip
     test_url: 测试代理ip有效性的url
@@ -133,7 +136,7 @@ def get_proxy_ip_multithread(test_url, threading_num=5):
     # 开启线程池
     for t in threadings:
         t.setDaemon(True)  # 守护式线程，主线程结束则子线程全部结束
-        time.sleep(0.5) # 间隔开启线程，保证每个线程获取到的ip不同，提高效率
+        time.sleep(1) # 间隔开启线程，保证每个线程获取到的ip不同，提高效率
         t.start() 
     # for t in threadings:
         # t.join()
@@ -149,7 +152,4 @@ def get_proxy_ip_multithread(test_url, threading_num=5):
 
 
 if __name__ == "__main__":
-    def A():
-        get_proxy_ip_multithread('http://tieba.baidu.com/')
-        print("111111111111111")
-    A()
+    get_proxy_ip_multithread('https://cn.investing.com/', 10)

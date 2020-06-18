@@ -111,7 +111,7 @@ def qcc_spider():
                                 continue
                         proxies = {
                             "http": "http://{}".format(proxy_ip),
-                            "https:": "https://{}".format(proxy_ip)
+                            "https": "https://{}".format(proxy_ip)
                         }
                         response = requests.get(_url, headers=_headers, proxies=proxies, timeout=5)
                         # print("{} ".format(proxy_ip), end='')
